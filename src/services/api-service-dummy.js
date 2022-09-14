@@ -28,18 +28,19 @@ export default function APIServiceDummy() {
     ]
 
     this.getProductDetails = async (id) => {
-        const productDetails = await new Promise(resolve => {
-            const filtered =products.filter((e) => e.id === id);
+
+        const productDetails = await new Promise((resolve, reject) => {
+            const filtered = products.filter((e) => e.id === id);
 
             setTimeout(() => {
                 if (filtered.length) {
-                    resolve(filtered[0])
+                    resolve(filtered[0]);
                 } else {
-                    throw Error("404");
+                    reject(new Error("Error load data"));
                 }
             }, NETWORK_DELAY);
         });
-
+        
         return productDetails;
     };
 

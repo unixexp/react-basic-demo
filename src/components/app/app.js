@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import APIServiceDummy from "../../services/api-service-dummy";
 
+import ErrorBoundry from "../error-boundry/error-boundry";
 import ProductDetails from "../product-details/product-details";
 import Counter from "../counter/counter";
 
@@ -13,8 +14,10 @@ const App = () => {
 
     return (
         <div>
-            <ProductDetails itemId={productId}
-                            getData={apiService.getProductDetails}/>
+            <ErrorBoundry>
+                <ProductDetails itemId={productId}
+                                getData={apiService.getProductDetails}/>
+            </ErrorBoundry>
             <Counter value={productId}
                      min="120"
                      max="122"

@@ -6,26 +6,35 @@ const ProductDetails = ({ itemId, getData }) => {
 
     const [ item, setItem ] = useState(null);
     const [ loading, setLoading ] = useState(1);
+    const [ error, setError ] = useState(null);
     const [ quantity, setQuantity ] = useState(1);
 
     useEffect(() => {
         let canceled = false;
+
+        setError(null);
         setLoading(1);
-        getData(itemId).then((item) => {
-            if (!canceled) {
-                setItem(item);
-            }
-            setLoading(0);
-        });
+
+        getData(itemId)
+            .then((item) => {
+                if (!canceled) {
+                    setItem(item);
+                }
+                setLoading(0);
+            })
+            .catch(e => { setLoading(0); setError(e); });
+
         return () => { canceled = true; }
     }, [ itemId ]);
 
-    if (loading || !item) {
+    if (loading) {
         return (
             <div className="spinner">
                 Loading...
             </div>
         );
+    } else if (error) {
+        throw new error;
     } else {
         return (
             <div className="product-details">
